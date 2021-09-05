@@ -1,0 +1,25 @@
+/* ==========================================================================
+   #BOX-SIZING
+   ========================================================================== */
+
+/**
+ * More sensible default box-sizing:
+ * css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice
+ */
+
+:root {
+    --sat: env(safe-area-inset-top);
+}
+
+html {
+    box-sizing: border-box;
+    min-height: calc(var(--vh, 1vh) * 100);
+}
+
+* {
+    &,
+    &:before,
+    &:after {
+        box-sizing: inherit;
+    }
+}

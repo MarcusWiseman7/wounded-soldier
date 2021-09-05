@@ -1,0 +1,32 @@
+/* ==========================================================================
+   $GLOBAL
+   ========================================================================== */
+
+$maxwidth: 600px;
+
+$header-height-sm: 50px;
+$header-height: 60px;
+
+$botnav-height-sm: 50px;
+$botnav-height: 60px;
+
+$gap: 20px;
+
+// Space between modal and top
+$modal-space: 6px;
+
+//breakpoints
+$breakpoints: (
+    // normal phones
+    'xs': 350px,
+    // until normal-size phones
+    's': 414px,
+    // medium
+    'm': 600px,
+    // tablet
+    't': 870px,
+    // desktop
+    'd': 1280px,
+    // full size
+    'full': 1518px
+);
