@@ -55,3 +55,57 @@
 .slide-side-leave-to {
     transform: translateX(-100%);
 }
+
+.page-forward-enter-active,
+.page-forward-leave-active,
+.page-back-enter-active,
+.page-back-leave-active {
+    transition: transform 0.3s ease-out;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.page-back-leave,
+.page-forward-enter-to {
+    transform: translateX(0%);
+}
+
+.page-back-leave-to,
+.page-forward-enter {
+    transform: translateX(100%);
+}
+
+.page-forward-enter,
+.page-forward-enter-to,
+.page-back-leave,
+.page-back-leave-to {
+    background: var(--c-base);
+    z-index: 99;
+}
+
+.page-forward-leave,
+.page-forward-leave-to,
+.page-back-enter,
+.page-back-enter-to {
+    z-index: 0;
+}
+
+.page-enter-active,
+.page-leave-active {
+    transition: all 0.3s ease;
+}
+
+.page-enter,
+.page-leave-to {
+    opacity: 0;
+}
+
+.page-leave,
+.page-enter-to {
+    opacity: 1;
+}

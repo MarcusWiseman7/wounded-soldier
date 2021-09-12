@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-router.post('/setCookie', async (req, res) => {
+router.post('/cookie', async (req, res) => {
     try {
         const name = req.body.name;
         const value = req.body.value;

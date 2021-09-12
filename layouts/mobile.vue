@@ -1,29 +1,22 @@
 <template>
-    <div id="app" :class="{ 'dark-mode': darkMode }">
+    <div id="app">
         <header>
             <menu-icon class="hamburger" @click="openMenu = true"></menu-icon>
         </header>
+        <div v-if="$route.name === 'index'" class="spacer"></div>
 
         <transition name="slide-side">
             <main-nav v-if="openMenu" :mobile="true" @close="openMenu = false"></main-nav>
         </transition>
 
-        <div class="content">
-            <Nuxt />
+        <div class="content" :class="{ 'content--index': $route.name === 'index' }">
+            <div class="main">
+                <div v-if="$route.name === 'index'" class="foam">
+                    <foam-b-g></foam-b-g>
+                </div>
+                <Nuxt />
+            </div>
         </div>
-        <b-footer></b-footer>
-
-        <b-popup
-            v-if="loginPopup"
-            :title="loginPopupObj.title"
-            :text="loginPopupObj.text"
-            :modifiers="['autoWidth']"
-            @close="closeLoginPopup"
-        >
-            <template v-slot:body>
-                <login-signup></login-signup>
-            </template>
-        </b-popup>
 
         <b-spinner v-if="loading"></b-spinner>
 
@@ -35,38 +28,75 @@
 
 <script>
 import { mapState } from 'vuex';
+import FoamBG from '@/assets/icons/layout/foam.svg?inline';
 import MenuIcon from '@/assets/icons/nav/menu.svg?inline';
 
 export default {
-    components: { MenuIcon },
+    name: 'mobile',
+    components: { MenuIcon, FoamBG },
     data() {
         return {
             openMenu: false,
         };
     },
     computed: {
-        ...mapState(['loading', 'bMessage', 'loginPopup', 'loginPopupObj', 'darkMode']),
-    },
-    methods: {
-        closeLoginPopup() {
-            this.$store.commit('toggle', 'loginPopup');
-            this.$store.commit('setObj', {
-                name: 'loginPopupObj',
-                obj: { title: 'Login', text: 'Enter your email and password to login' },
-            });
-        },
+        ...mapState(['loading', 'bMessage']),
     },
 };
 </script>
 
 <style lang="scss" scoped>
 header {
-    background-color: #3c3737;
+    height: 46px;
+    background: #3c3737;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: var(--z-mobile-header);
 
     .hamburger {
         margin: 11px 28px;
         height: 24px;
         width: 24px;
     }
+}
+
+.spacer {
+    position: fixed;
+    top: 44px;
+    left: 0;
+    right: 0;
+    height: 86px;
+    z-index: var(--z-mobile-header-spacer);
+    background: #3c3737;
+}
+
+.content {
+    padding-top: 46px;
+
+    &--index {
+        padding-top: 130px;
+    }
+}
+
+.main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-second);
+
+    .foam {
+        position: absolute;
+        right: -3px;
+        top: -67px;
+        width: 58%;
+        z-index: var(--z-foam);
+    }
+}
+
+// foam svg
+.color-object {
+    fill: var(--bg-third);
 }
 </style>

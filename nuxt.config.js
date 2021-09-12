@@ -27,7 +27,11 @@ module.exports = {
     css: ['@/assets/scss/main.scss'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ['@/plugins/v-scroll-lock'],
+    plugins: [
+        { src: '@/plugins/nuxt-client-init', mode: 'client' },
+        { src: '@/plugins/v-scroll-lock', mode: 'client' },
+        { src: '@/plugins/soldier' },
+    ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
@@ -36,12 +40,13 @@ module.exports = {
     telemetry: true,
 
     // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-    buildModules: ['@nuxtjs/svg', '@nuxtjs/device'],
+    buildModules: ['@nuxtjs/style-resources', '@nuxtjs/svg', '@nuxtjs/device'],
 
     // Modules: https://go.nuxtjs.dev/config-modules
     modules: [
         'nuxt-helmet',
         'nuxt-compress',
+        ['cookie-universal-nuxt', { parseJSON: false }],
         // https://go.nuxtjs.dev/axios
         '@nuxtjs/axios',
         // https://go.nuxtjs.dev/pwa
@@ -52,7 +57,6 @@ module.exports = {
         '@nuxtjs/auth',
         '@nuxtjs/proxy',
         '@nuxtjs/cloudinary',
-        '@nuxtjs/style-resources',
         '@nuxtjs/sitemap', // Always last
     ],
 
@@ -83,6 +87,15 @@ module.exports = {
     pwa: {
         manifest: {
             lang: 'en',
+            name: 'Wounded Soldier',
+            short_name: 'wsbeer',
+            theme_color: '#fb6d3a',
+            background_color: '#3c3737',
+            mobileAppIOS: 'true',
+            appleStatusBarStyle: 'default',
+        },
+        workbox: {
+            dev: false, // or use a global variable to track the current NODE_ENV, etc to determine dev mode
         },
     },
 
@@ -124,6 +137,6 @@ module.exports = {
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
-        transpile: ['v-body-scroll-lock'],
+        transpile: ['vue-clamp', 'resize-detector'],
     },
 };

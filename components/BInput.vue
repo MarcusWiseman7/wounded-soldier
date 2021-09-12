@@ -60,7 +60,7 @@
                     v-if="searchValid && !loading"
                     @click="$emit('clear-fld')"
                     class="search-area__state--clear"
-                    src="@/assets/icons/closer.svg"
+                    src="@/assets/icons/general/closer.svg"
                     alt="clear"
                     width="16"
                     height="16"

@@ -1,6 +1,6 @@
 <template>
-    <div v-if="brewery" class="brewery">
-        <!-- <div class="back" @click="goBackOrIndex">
+    <div v-if="brewery" class="brewery page-inner">
+        <div class="back" @click="$goBackOrIndex">
             <img src="@/assets/icons/arrow_back.svg" alt="Back" />
         </div>
         <div class="brewery__title-row">
@@ -33,7 +33,7 @@
             </div>
 
             <brewery-beers :beers="beers" :breweryLogo="brewery.logo"></brewery-beers>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -42,6 +42,12 @@ import helpers from '@/helpers';
 
 export default {
     name: 'SingleBrewery',
+    layout: ctx => (ctx.$device.isMobile ? 'mobile' : 'desktop'),
+    transition(to, from) {
+        if (!$nuxt.$device.isMobile || !from) return;
+        const name = to.name === 'SingleBrewery-id' ? 'page-forward' : 'page-back';
+        return { name, mode: '' };
+    },
     mixins: [helpers],
     async asyncData({ params, store, redirect }) {
         if (!params.id) return redirect('/');
@@ -114,7 +120,7 @@ export default {
             width: 50%;
 
             &:first-child {
-                border-right: 1px solid var(--color-text-secondary);
+                border-right: 1px solid var(--color-text-second);
             }
         }
     }

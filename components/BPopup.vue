@@ -4,7 +4,7 @@
             <div class="popup" :class="[modifierClass, { 'popup--wholeHeight': setHeight }]" @mousedown.stop="">
                 <div class="popup__container" v-body-scroll-lock="true" ref="popup">
                     <button v-if="closeIcon" @click="$emit('close')" class="popup__close">
-                        <img src="@/assets/icons/closer.svg" alt="close" />
+                        <img src="@/assets/icons/general/closer.svg" alt="close" />
                     </button>
 
                     <div class="popup__content">

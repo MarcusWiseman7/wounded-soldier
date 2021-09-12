@@ -1,5 +1,8 @@
 <template>
     <div :class="{ mobile: mobile, desktop: !mobile }" @touchend="$emit('close')">
+        <div v-if="mobile" class="close-x">
+            <close-x></close-x>
+        </div>
         <ul class="nav">
             <nuxt-link
                 v-for="(nav, i) in navigationItems"
@@ -64,13 +67,14 @@ import { mapState } from 'vuex';
 import HomeIcon from '@/assets/icons/nav/home.svg?inline';
 import DiscoverIcon from '@/assets/icons/nav/search.svg?inline';
 import ProfileIcon from '@/assets/icons/nav/person.svg?inline';
+import CloseX from '@/assets/icons/general/closer.svg?inline';
 
 export default {
     name: 'MainNav',
     props: {
         mobile: { type: Boolean, default: false },
     },
-    components: { HomeIcon, DiscoverIcon, ProfileIcon },
+    components: { HomeIcon, DiscoverIcon, ProfileIcon, CloseX },
     computed: {
         ...mapState(['navigationItems', 'socialItems', 'footerItems']),
     },
@@ -101,7 +105,7 @@ export default {
         }
 
         &--active {
-            background: var(--bg-secondary);
+            background: var(--bg-second);
             color: var(--color-main);
 
             svg {
@@ -117,6 +121,23 @@ export default {
 
 .beer-icon {
     height: 36px;
+}
+
+.close-x {
+    position: absolute;
+    top: 10px;
+    right: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    background: var(--color-text-second);
+    border-radius: 50%;
+
+    .color-object {
+        fill: #3c3737;
+    }
 }
 
 footer {
@@ -203,7 +224,7 @@ footer {
                     height: 60px;
                     width: 30px;
                     border-radius: 0 0 30px 0;
-                    box-shadow: 0 30px 0 0 var(--bg-secondary);
+                    box-shadow: 0 30px 0 0 var(--bg-second);
                     background-color: var(--bg);
                 }
 
@@ -215,7 +236,7 @@ footer {
                     height: 60px;
                     width: 30px;
                     border-radius: 0 30px 0 0;
-                    box-shadow: 0 -30px 0 0 var(--bg-secondary);
+                    box-shadow: 0 -30px 0 0 var(--bg-second);
                     background-color: var(--bg);
                 }
             }
@@ -234,8 +255,8 @@ footer {
     top: 0;
     bottom: 0;
     left: 0;
-    background-color: var(--bg-secondary);
-    z-index: 3;
+    background-color: var(--bg-second);
+    z-index: 44;
 
     .nav {
         padding: 54px 16px;
@@ -259,7 +280,7 @@ footer {
             }
 
             &--active {
-                background: var(--bg-secondary);
+                background: var(--bg-second);
                 color: var(--color-main);
 
                 svg {

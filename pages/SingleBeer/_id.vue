@@ -1,5 +1,5 @@
 <template>
-    <div v-if="beer" class="beer">
+    <div v-if="beer" class="beer page-inner">
         <div class="back" @click="goBack">
             <img src="@/assets/icons/arrow_back.svg" alt="Back" />
         </div>
@@ -53,6 +53,12 @@ import helpers from '@/helpers';
 
 export default {
     name: 'SingleBeer',
+    layout: ctx => (ctx.$device.isMobile ? 'mobile' : 'desktop'),
+    transition(to, from) {
+        if (!$nuxt.$device.isMobile || !from) return;
+        const name = to.name === 'SingleBeer-id' ? 'page-forward' : 'page-back';
+        return { name, mode: '' };
+    },
     mixins: [helpers],
     async asyncData({ params, store, redirect }) {
         if (!params.id) return redirect('/');
@@ -77,7 +83,7 @@ export default {
     methods: {
         goBack() {
             if (this.reviewing) this.reviewing = false;
-            else this.goBackOrIndex();
+            else this.$goBackOrIndex();
         },
         checkIfLogged() {
             if (!this.myId) {
@@ -161,7 +167,7 @@ export default {
             width: 50%;
 
             &:first-child {
-                border-right: 1px solid var(--color-text-secondary);
+                border-right: 1px solid var(--color-text-second);
             }
         }
     }

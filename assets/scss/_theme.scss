@@ -1,50 +1,65 @@
 :root {
-    // --color-primary: #ffa000; old...
+    // --color-primary: #ffa000; old..
     --color-main: #fb6d3a;
     --color-main-darker: #fa591e;
     --color-main-muted: #fca382;
     --color-main-disabled: #fedacd;
-    --color-secondary: #0e2233;
-
-    --color-text: #3c3737;
-    --color-text-secondary: #999faa;
+    --color-second: #0e2233;
 
     --color-error: #dd2c00;
     --color-success: #00e676;
-    --color-info: grey;
+    --color-info: #dbdee7;
 
-    --bg: #e5e5e5;
-    --bg-secondary: #ffffff;
-    --bg-card: #f2f4f8;
+    // z-indexes
+    --z-mobile-header: 33;
+    --z-mobile-header-spacer: -2;
+    --z-foam: -1;
+}
+
+@mixin lightTheme() {
+    --color-text: #3c3737;
+    --color-text-second: #999faa;
+
+    --bg: #e5e5e5; // body
+    --bg-second: #ffffff; // page inner...
+    --bg-third: #f2f4f8; // hover cards, +...
 
     --border-color: #ddd;
 }
 
-.dark-mode {
-    --bg: #3c3737;
-    --bg-secondary: #332d2d;
-
-    --bg-card-hover: #514c4c;
-    --border-color: #484c51;
-
+@mixin darkTheme() {
     --color-text: #ffffff;
-    --color-text-secondary: #999faa;
+    --color-text-second: #999faa;
 
-    // --color: #ebf4f1;
-    // --color-primary: #ffa000;
-    // --color-secondary: #e6e6e6;
-    // // --bg: #091a28;
-    // --bg: #1f2931;
-    // --bg-secondary: #071521;
-    // --border-color: #0d2538;
+    --bg: #3c3737;
+    --bg-second: #332d2d;
+    --bg-third: #514c4c;
 
-    // .popup {
-    //     &__container {
-    //         background-color: var(--bg) !important;
-    //     }
+    --border-color: #484c51;
+}
 
-    //     &__content {
-    //         color: var(--color) !important;
-    //     }
-    // }
+html {
+    @media (prefers-color-scheme: light) {
+        @include lightTheme;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        @include darkTheme;
+    }
+
+    &[data-theme='light'] {
+        @include lightTheme;
+
+        @media (prefers-color-scheme: dark) {
+            @include lightTheme;
+        }
+    }
+
+    &[data-theme='dark'] {
+        @include darkTheme;
+
+        @media (prefers-color-scheme: light) {
+            @include darkTheme;
+        }
+    }
 }

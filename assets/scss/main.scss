@@ -87,17 +87,16 @@ input,
 .input,
 .input::before {
     background-color: transparent !important;
-    color: var(--color-secondary) !important;
+    color: var(--color-second) !important;
 }
 
 .input {
-    border: 1px solid var(--color-secondary);
+    border: 1px solid var(--color-second);
 }
 
 .page-inner {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-second);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 30px 30px 0px 0px;
     padding: 30px;
     height: 100%;
 
@@ -106,7 +105,6 @@ input,
         font-size: 26px;
         line-height: 26px;
         letter-spacing: -0.015em;
-        color: var(--color-text);
     }
 }
 

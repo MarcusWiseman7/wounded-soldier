@@ -135,7 +135,7 @@ export default {
         &__info {
             display: flex;
             flex-direction: column;
-            color: var(--color-text-secondary);
+            color: var(--color-text-second);
             font-size: 14px;
             line-height: 20px;
             margin: 6px 0 14px 0;
@@ -154,7 +154,7 @@ export default {
     }
 
     &:hover {
-        background-color: var(--bg-card-hover);
+        background-color: var(--bg-third);
     }
 }
 

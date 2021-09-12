@@ -1,5 +1,5 @@
 <template>
-    <div id="app" :class="{ 'dark-mode': darkMode }">
+    <div id="app">
         <header>
             <div class="logo-holder">
                 <img class="beer-icon" src="@/assets/icons/white-beer.svg" alt="Beer" />
@@ -44,10 +44,10 @@
 
 <script>
 import { mapState } from 'vuex';
-import FoamBG from '@/assets/icons/foam.svg?inline';
+import FoamBG from '@/assets/icons/layout/foam.svg?inline';
 
 export default {
-    name: 'Desktop',
+    name: 'desktop',
     components: { FoamBG },
     data() {
         return {};
@@ -68,10 +68,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
-    display: flex;
-}
-
 header {
     display: flex;
     align-items: center;
@@ -98,6 +94,10 @@ header {
     }
 }
 
+.content {
+    display: flex;
+}
+
 .main {
     width: 55%;
     position: relative;
@@ -106,7 +106,8 @@ header {
         position: absolute;
         right: 33px;
         top: -120px;
-        z-index: -1;
+        width: 50%;
+        z-index: var(--z-foam);
     }
 }
 
@@ -118,5 +119,14 @@ header {
 
 .right-aside {
     width: 20%;
+}
+
+// foam svg
+.color-object {
+    fill: var(--bg-third);
+}
+
+.page-inner {
+    border-radius: 30px 30px 0px 0px;
 }
 </style>

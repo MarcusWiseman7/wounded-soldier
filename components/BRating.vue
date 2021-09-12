@@ -97,7 +97,7 @@ export default {
     }
 
     &__count {
-        color: var(--color-text-secondary);
+        color: var(--color-text-second);
         margin-left: 4px;
     }
 }

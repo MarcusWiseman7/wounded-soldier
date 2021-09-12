@@ -235,7 +235,7 @@ export default {
         }
 
         &--disabled {
-            color: var(--color-text-secondary);
+            color: var(--color-text-second);
         }
     }
 
@@ -245,7 +245,7 @@ export default {
     }
 
     &__date--disabled:hover {
-        color: var(--color-text-secondary);
+        color: var(--color-text-second);
         border: none;
     }
 }
