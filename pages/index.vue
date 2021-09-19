@@ -1,5 +1,5 @@
 <template>
-    <div class="page-inner">
+    <div class="">
         <h1 class="headline first">New and popular</h1>
         <b-wrapper v-if="topBeers" :modifiers="['full-card']" :items="topBeers.slice(0, 2)"></b-wrapper>
 

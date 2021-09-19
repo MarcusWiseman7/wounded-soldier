@@ -2,14 +2,14 @@
     <div class="signup">
         <div class="signup__container">
             <h1>Sign up</h1>
-            <!-- <login-signup></login-signup> -->
+            <login-signup></login-signup>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'SignUp',
+    name: 'LoginSignup',
 };
 </script>
 

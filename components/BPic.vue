@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import BeerSVG from '@/components/BeerSVG';
+import BeerSVG from '@/components/BeerSVG?inline';
 
 export default {
     name: 'BPic',

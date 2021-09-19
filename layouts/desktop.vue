@@ -16,7 +16,9 @@
                 <div class="foam">
                     <foam-b-g></foam-b-g>
                 </div>
-                <Nuxt />
+                <div class="page-inner">
+                    <Nuxt />
+                </div>
             </div>
 
             <div class="right-aside"></div>

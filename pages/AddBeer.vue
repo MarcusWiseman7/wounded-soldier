@@ -1,6 +1,6 @@
 <template>
     <div class="add-beer">
-        <!-- <div class="add-beer__content">
+        <div class="add-beer__content">
             <h2>New Beer!! You're a hero!!!</h2>
             <div class="add-beer__inputs">
                 <b-input label="Name" labelFor="beer">
@@ -26,7 +26,7 @@
             <div class="add-beer__actions">
                 <b-button group="main" :disabled="!formOK" @clicked="add">Add beer</b-button>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 

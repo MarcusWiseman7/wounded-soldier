@@ -108,7 +108,7 @@
 import debounce from '@/debounce';
 
 export default {
-    name: 'LoginSignup',
+    name: 'Auth',
     data() {
         return {
             passwordInputType: true,
@@ -258,11 +258,10 @@ export default {
         },
     },
     created() {
-        if (this.$route.name == 'SignUp') this.showPassword = true;
-        if (this.$store.state.authContact) {
-            this.contact = Object.assign({}, this.contact, this.$store.state.authContact);
-            this.recheckError('email');
-        }
+        // if (this.$store.state.authContact) {
+        //     this.contact = Object.assign({}, this.contact, this.$store.state.authContact);
+        //     this.recheckError('email');
+        // }
     },
 };
 </script>

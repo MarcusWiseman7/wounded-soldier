@@ -1,5 +1,5 @@
 <template>
-    <div v-if="beer" class="beer page-inner">
+    <div v-if="beer" class="beer">
         <div class="back" @click="goBack">
             <img src="@/assets/icons/arrow_back.svg" alt="Back" />
         </div>
@@ -52,11 +52,11 @@ import { mapGetters } from 'vuex';
 import helpers from '@/helpers';
 
 export default {
-    name: 'SingleBeer',
+    name: 'Beer',
     layout: ctx => (ctx.$device.isMobile ? 'mobile' : 'desktop'),
     transition(to, from) {
         if (!$nuxt.$device.isMobile || !from) return;
-        const name = to.name === 'SingleBeer-id' ? 'page-forward' : 'page-back';
+        const name = to.name === 'Beer-id' ? 'page-forward' : 'page-back';
         return { name, mode: '' };
     },
     mixins: [helpers],

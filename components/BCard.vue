@@ -1,7 +1,7 @@
 <template>
     <nuxt-link
         v-if="item && item.hasOwnProperty('brewery')"
-        :to="`/SingleBeer/${item._id}`"
+        :to="`/Beer/${item._id}`"
         class="card no-drag"
         :class="[
             modifiers.map(x => 'card--' + x),
@@ -9,7 +9,7 @@
         ]"
     >
         <cld-image v-if="item.logo || item.brewery.logo" :publicId="src" alt="logo" />
-        <b-pic v-else></b-pic>
+        <b-pic src=""></b-pic>
 
         <div class="card__desc">
             <div>
@@ -38,7 +38,7 @@
     </nuxt-link>
     <nuxt-link
         v-else-if="item"
-        :to="`/SingleBrewery/${item._id}`"
+        :to="`/Brewery/${item._id}`"
         class="card"
         :class="[modifiers.map(x => 'card--' + x), { disabled: dragging }]"
     >

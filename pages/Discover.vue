@@ -1,5 +1,5 @@
 <template>
-    <div class="page-inner">
+    <div class="">
         <b-search class="search"></b-search>
         <!-- <b-wrapper v-if="searchResults" which="searchResults" :items="searchResults"></b-wrapper>
         <b-wrapper which="topBeers" :items="topBeers"></b-wrapper> -->

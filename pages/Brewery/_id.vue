@@ -1,5 +1,5 @@
 <template>
-    <div v-if="brewery" class="brewery page-inner">
+    <div v-if="brewery" class="brewery">
         <div class="back" @click="$goBackOrIndex">
             <img src="@/assets/icons/arrow_back.svg" alt="Back" />
         </div>
@@ -41,11 +41,11 @@
 import helpers from '@/helpers';
 
 export default {
-    name: 'SingleBrewery',
+    name: 'Brewery',
     layout: ctx => (ctx.$device.isMobile ? 'mobile' : 'desktop'),
     transition(to, from) {
         if (!$nuxt.$device.isMobile || !from) return;
-        const name = to.name === 'SingleBrewery-id' ? 'page-forward' : 'page-back';
+        const name = to.name === 'Brewery-id' ? 'page-forward' : 'page-back';
         return { name, mode: '' };
     },
     mixins: [helpers],
