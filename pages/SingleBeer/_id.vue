@@ -96,6 +96,7 @@ export default {
     created() {
         if (!this.$route.params || !this.$route.params.hasOwnProperty('id') || !this.$route.params.id) {
             this.$router.replace('/');
+            return;
         }
     },
 };
