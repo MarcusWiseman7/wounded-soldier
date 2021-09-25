@@ -8,8 +8,16 @@
             { disabled: dragging, 'card--desktop': !mobile, 'card--mobile': mobile },
         ]"
     >
-        <cld-image v-if="item.logo || item.brewery.logo" :publicId="src" alt="logo" />
-        <b-pic src=""></b-pic>
+        <b-pic
+            class="card__bg-img"
+            :src="stockPic"
+            :modifiers="[modifiers.includes('full-card') ? 'card-bg-large' : 'card-bg']"
+        ></b-pic>
+        <b-pic
+            :src="item.logo || item.brewery.logo"
+            alt="logo"
+            :modifiers="modifiers.includes('full-card') ? ['card-logo', 'card-logo-large'] : ['card-logo']"
+        ></b-pic>
 
         <div class="card__desc">
             <div>
@@ -42,7 +50,9 @@
         class="card"
         :class="[modifiers.map(x => 'card--' + x), { disabled: dragging }]"
     >
-        <cld-image :publicId="src" alt="logo" />
+        <b-pic :modifiers="['card-bg']"></b-pic>
+        <b-pic :src="item.logo || item.brewery.logo" alt="logo" :modifiers="['card-logo']"></b-pic>
+
         <div class="card__desc">
             <h3>{{ item.name }}</h3>
             <h5>{{ item.type }}</h5>
@@ -52,6 +62,7 @@
 
 <script>
 import VClamp from 'vue-clamp';
+import { mapState } from 'vuex';
 
 export default {
     name: 'BCard',
@@ -62,18 +73,12 @@ export default {
     },
     components: { VClamp },
     computed: {
+        ...mapState(['stockPhotos']),
         mobile() {
             return this.$device.isMobile;
         },
-        src() {
-            return this.$cloudinary.image.url(this.item.logo || this.item.brewery.logo, {});
-        },
-        publicID() {
-            const url = this.item.logo || this.item.brewery.logo;
-            if (url) {
-                const index = url.indexOf('/breweries/');
-                return url.slice(index);
-            }
+        stockPic() {
+            return 'stock/' + this.stockPhotos[Math.floor(Math.random() * this.stockPhotos.length)];
         },
     },
 };
@@ -94,6 +99,12 @@ export default {
     margin: 0 12px 12px 0;
     background-color: var(--bg);
     overflow: hidden;
+    position: relative;
+
+    &__bg-img {
+        width: 100%;
+        height: 100px;
+    }
 
     &--desktop {
         width: calc(25% - 9px);
@@ -109,18 +120,16 @@ export default {
                 margin-right: 0;
             }
         }
+
+        .card__bg-img {
+            width: 100%;
+            height: 160px;
+        }
     }
 
     &--mobile {
         min-width: 160px;
         max-width: 160px;
-    }
-
-    img {
-        height: 90px;
-        width: 160px;
-        object-fit: contain;
-        border-radius: 12px 12px 0 0;
     }
 
     &__desc {

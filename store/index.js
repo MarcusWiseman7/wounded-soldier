@@ -37,6 +37,7 @@ export const state = () => ({
         { name: 'Ad choices', route: { name: 'index' } },
         { name: 'Cookies', route: { name: 'index' } },
     ],
+    stockPhotos: ['b6_k7y5gk', 'b5_tpwqfg', 'b4_xsn93f', 'b3_ytdxaa', 'b2_koxyps', 'b1_y41vkg'],
 });
 
 export const getters = {

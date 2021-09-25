@@ -40,10 +40,8 @@ export default {
             // let newPageReq =
             //     e.target.scrollWidth - e.target.scrollLeft - 2 * e.target.clientWidth < e.target.clientWidth;
             // if (newPageReq && this.canLoadOlder) {
-            //     this.$store.dispatch('epictour/getList', {
-            //         type: 'chatList',
-            //         myGender: this.myProfile.gender,
-            //         mySexuality: this.myProfile.sexuality,
+            //     this.$store.dispatch('', {
+            //         type: '',
             //         nextpage: true,
             //     });
             // }
