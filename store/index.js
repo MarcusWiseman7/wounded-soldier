@@ -37,7 +37,14 @@ export const state = () => ({
         { name: 'Ad choices', route: { name: 'index' } },
         { name: 'Cookies', route: { name: 'index' } },
     ],
-    stockPhotos: ['b6_k7y5gk', 'b5_tpwqfg', 'b4_xsn93f', 'b3_ytdxaa', 'b2_koxyps', 'b1_y41vkg'],
+    stockPhotos: [
+        '/stock/b6_k7y5gk',
+        '/stock/b5_tpwqfg',
+        '/stock/b4_xsn93f',
+        '/stock/b3_ytdxaa',
+        '/stock/b2_koxyps',
+        '/stock/b1_y41vkg',
+    ],
 });
 
 export const getters = {
@@ -477,7 +484,7 @@ export const actions = {
     },
     normalizeNamesInDB({}) {
         this.$axios
-            .$patch('/api/beers/normalizeNames')
+            .$patch('/api/utilities/normalizeNamesInDB')
             .then(res => {
                 console.log('res :>> ', res);
             })
@@ -487,7 +494,7 @@ export const actions = {
     },
     generalDBUpdate({}) {
         this.$axios
-            .$patch('/api/beers/updateDB')
+            .$patch('/api/utilities/updateDB')
             .then(res => {
                 console.log('res :>> ', res);
             })

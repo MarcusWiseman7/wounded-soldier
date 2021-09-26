@@ -1,8 +1,11 @@
 <template>
     <div class="b-pic" :class="modifiers.map(m => 'b-pic--' + m)">
-        <cld-image v-if="psrc" :public-id="psrc" alt="logo" fetchFormat="auto" loading="lazy">
-            <cld-placeholder type="pixelate" />
+        <cld-image v-if="publicId" :public-id="publicId" alt="logo" fetchFormat="auto" loading="lazy">
+            <cld-placeholder type="blur" />
         </cld-image>
+
+        <img v-else-if="src" :src="src" :alt="alt" />
+
         <div v-else class="placeholder">
             <BeerSVG></BeerSVG>
         </div>
@@ -16,14 +19,15 @@ export default {
     name: 'BPic',
     components: { BeerSVG },
     props: {
+        publicId: { type: String, required: false },
         src: { type: String, required: false },
         alt: { type: String, required: false },
         modifiers: { type: Array, default: () => [] },
     },
     computed: {
-        psrc() {
-            return this.$cloudinary.image.url(this.src, {});
-        },
+        // psrc() {
+        //     return this.$cloudinary.image.url(this.src, {});
+        // },
     },
 };
 </script>
@@ -60,7 +64,7 @@ export default {
         width: 50px;
         border-radius: 4px;
         z-index: 4;
-        transform: translate3d(0, -60%, 0);
+        // transform: translate3d(0, -60%, 0);
         box-shadow: 0 0 4px rgba($color: #fff, $alpha: 0.08);
 
         /deep/ img {

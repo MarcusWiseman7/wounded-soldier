@@ -10,22 +10,25 @@
     >
         <b-pic
             class="card__bg-img"
-            :src="stockPic"
+            :publicId="stockPic"
             :modifiers="[modifiers.includes('full-card') ? 'card-bg-large' : 'card-bg']"
         ></b-pic>
-        <b-pic
-            :src="item.logo || item.brewery.logo"
-            alt="logo"
-            :modifiers="modifiers.includes('full-card') ? ['card-logo', 'card-logo-large'] : ['card-logo']"
-        ></b-pic>
 
-        <div class="card__desc">
-            <div>
-                <h3>{{ item.beerName }}</h3>
-                <div class="card__desc__info">
-                    <span class="bolder">{{ item.brewery.name }}</span>
-                    <span>{{ item.style }}</span>
+        <div class="card__content">
+            <div class="card__content__inner">
+                <div class="card__content__desc">
+                    <b-pic
+                        :publicId="item.logoPublicId || item.brewery.logoPublicId"
+                        alt="logo"
+                        :modifiers="modifiers.includes('full-card') ? ['card-logo', 'card-logo-large'] : ['card-logo']"
+                    ></b-pic>
+                    <div class="card__content__names">
+                        <h3>{{ item.beerName }}</h3>
+                        <span class="bolder">{{ item.brewery.name }}</span>
+                        <span>{{ item.style }}</span>
+                    </div>
                 </div>
+
                 <div v-if="modifiers.includes('full-card')" class="full-card">
                     <v-clamp :max-lines="2" tag="p" ellipsis="">
                         <template>{{ item.brewery.description }}</template>
@@ -50,10 +53,14 @@
         class="card"
         :class="[modifiers.map(x => 'card--' + x), { disabled: dragging }]"
     >
-        <b-pic :modifiers="['card-bg']"></b-pic>
-        <b-pic :src="item.logo || item.brewery.logo" alt="logo" :modifiers="['card-logo']"></b-pic>
+        <b-pic
+            class="card__bg-img"
+            :publicId="stockPic"
+            :modifiers="[modifiers.includes('full-card') ? 'card-bg-large' : 'card-bg']"
+        ></b-pic>
+        <b-pic :publicId="item.logoPublicId || item.brewery.logoPublicId" alt="logo" :modifiers="['card-logo']"></b-pic>
 
-        <div class="card__desc">
+        <div class="card__content">
             <h3>{{ item.name }}</h3>
             <h5>{{ item.type }}</h5>
         </div>
@@ -78,7 +85,7 @@ export default {
             return this.$device.isMobile;
         },
         stockPic() {
-            return 'stock/' + this.stockPhotos[Math.floor(Math.random() * this.stockPhotos.length)];
+            return this.stockPhotos[Math.floor(Math.random() * this.stockPhotos.length)];
         },
     },
 };
@@ -128,11 +135,11 @@ export default {
     }
 
     &--mobile {
-        min-width: 160px;
-        max-width: 160px;
+        min-width: 260px;
+        max-width: 260px;
     }
 
-    &__desc {
+    &__content {
         padding: 12px;
         display: flex;
         flex-direction: column;
@@ -141,13 +148,17 @@ export default {
         width: 100%;
         height: 100%;
 
-        &__info {
+        &__desc {
+            display: flex;
+        }
+
+        &__names {
             display: flex;
             flex-direction: column;
             color: var(--color-text-second);
             font-size: 14px;
             line-height: 20px;
-            margin: 6px 0 14px 0;
+            margin-left: 10px;
             font-weight: 400;
 
             .bolder {

@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema(
     {
-        pic: { type: String, trim: true },
-        picId: { type: String, trim: true },
+        picURL: { type: String, trim: true },
+        picPublicId: { type: String, trim: true },
         price: { type: Number },
         location: { type: String, trim: true },
         rating: { type: Number, required: true },

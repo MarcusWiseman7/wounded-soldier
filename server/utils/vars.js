@@ -1,7 +1,7 @@
-const userSelect = '_id email altEmails displayName name avatarURL avatarId reviews darkMode';
+const userSelect = '_id email altEmails displayName name avatarPublicId reviews darkMode';
 const reviewSelect = '-__v';
 const beerSelect =
-    '_id beerName brewery style degrees abv bi logo logoId description averageRating totalNumberOfRatings';
+    '_id beerName brewery style degrees abv bi logoPublicId description averageRating totalNumberOfRatings';
 const tempBeerSelect = beerSelect + ' tempBeer tempBrewery';
 const brewerySelect = '-__v -sumOfAllBeerRatings -dateCreated';
 

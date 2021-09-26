@@ -59,56 +59,6 @@ router.post('/addNewBeer', async (req, res) => {
     }
 });
 
-router.patch('/normalizeNames', async (req, res) => {
-    try {
-        const beers = await Beer.find();
-        const breweries = await Brewery.find();
-
-        await beers.forEach(async beer => {
-            beer.altName = beer.beerName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            await beer.save(err => {
-                if (err)
-                    return res.status(400).send({ statusCode: -1, dbSaveError: err, message: 'Error saving beer' });
-            });
-        });
-
-        await breweries.forEach(async brewery => {
-            brewery.altName = brewery.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            await brewery.save(err => {
-                if (err)
-                    return res.status(400).send({ statusCode: -1, dbSaveError: err, message: 'Error saving brewery' });
-            });
-        });
-
-        res.status(200).send({ statusCode: 1 });
-    } catch (err) {
-        return res.status(400).send({ statusCode: -1, catchError: err });
-    }
-});
-
-router.patch('/updateDB', async (req, res) => {
-    try {
-        const breweries = await Brewery.find();
-
-        breweries.forEach(async brewery => {
-            if (!brewery.hasOwnProperty('tempBrewery')) {
-                brewery.tempBrewery = false;
-
-                await brewery.save(err => {
-                    if (err)
-                        return res
-                            .status(400)
-                            .send({ statusCode: -1, dbSaveError: err, message: 'Error saving brewery' });
-                });
-            }
-        });
-
-        res.status(200).send({ statusCode: 1 });
-    } catch (err) {
-        return res.status(400).send({ statusCode: -1, catchError: err });
-    }
-});
-
 router.get('/search/:q', async (req, res) => {
     try {
         const q = req.params.q;
