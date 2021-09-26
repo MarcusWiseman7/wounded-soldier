@@ -150,6 +150,7 @@ export default {
 
         &__desc {
             display: flex;
+            margin-bottom: 20px;
         }
 
         &__names {
@@ -163,6 +164,10 @@ export default {
 
             .bolder {
                 font-weight: 600;
+            }
+
+            h3 {
+                color: var(--color-text);
             }
         }
 
