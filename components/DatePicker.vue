@@ -174,7 +174,7 @@ export default {
 
 <style lang="scss" scoped>
 .picker {
-    background-color: var(--bg);
+    background-color: var(--color-bg);
     position: absolute;
     top: 90px;
     left: 160px;

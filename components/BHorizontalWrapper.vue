@@ -210,7 +210,7 @@ export default {
     .bt {
         position: absolute;
         transform: translateY(-50%);
-        z-index: 2;
+        z-index: 33;
         width: 54px;
         background: transparent;
         top: 50%;
@@ -233,9 +233,10 @@ export default {
         background: #fff;
         border: 1px solid #ddd;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-        z-index: 3;
+        z-index: var(--z-button);
         width: 39px;
         height: 42px;
+        cursor: pointer;
     }
 
     .lt {

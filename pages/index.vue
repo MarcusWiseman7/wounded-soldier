@@ -29,6 +29,10 @@ import { mapState } from 'vuex';
 export default {
     name: 'Home',
     layout: ctx => (ctx.$device.isMobile ? 'mobile' : 'desktop'),
+    // transition(to, from) {
+    //     if (!$nuxt.$device.isMobile || !from) return;
+    //     return $nuxt.$store.state.transitionName;
+    // },
     computed: {
         ...mapState(['topBeers']),
         mobile() {

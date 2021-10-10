@@ -12,7 +12,7 @@
                     </div>
                     <b-rating :rating="r.rating" :size="16" :id="r._id"></b-rating>
                 </div>
-                <p v-if="r.notes && r.notes.length > 0" class="review__notes">"{{ r.notes }}"</p>
+                <p v-if="r.notes && r.notes.length > 0" class="review__notes">{{ r.notes }}</p>
             </div>
         </li>
     </ul>

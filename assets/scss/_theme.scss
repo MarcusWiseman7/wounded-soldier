@@ -6,6 +6,8 @@
     --color-main-disabled: #fedacd;
     --color-second: #0e2233;
 
+    --color-hover: rgba(255, 255, 255, 0.2);
+
     --color-error: #dd2c00;
     --color-success: #00e676;
     --color-info: #dbdee7;
@@ -14,28 +16,33 @@
     --z-mobile-header: 33;
     --z-mobile-header-spacer: -2;
     --z-foam: -1;
+    --z-button: 35;
+
+    // heights
+    --height-card-bgimage: 100px;
+    --height-card-bgimage-large: 160px;
 }
 
 @mixin lightTheme() {
     --color-text: #3c3737;
     --color-text-second: #999faa;
 
-    --bg: #e5e5e5; // body
-    --bg-second: #ffffff; // page inner...
-    --bg-third: #f2f4f8; // hover cards, +...
+    --color-bg: #e5e5e5; // body
+    --color-bg-second: #ffffff; // page inner...
+    --color-bg-third: #f2f4f8; // hover cards, +...
 
-    --border-color: #ddd;
+    --color-border: #ddd;
 }
 
 @mixin darkTheme() {
     --color-text: #ffffff;
     --color-text-second: #999faa;
 
-    --bg: #3c3737;
-    --bg-second: #332d2d;
-    --bg-third: #514c4c;
+    --color-bg: #3c3737;
+    --color-bg-second: #332d2d;
+    --color-bg-third: #514c4c;
 
-    --border-color: #484c51;
+    --color-border: #484c51;
 }
 
 html {

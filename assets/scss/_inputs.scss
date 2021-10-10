@@ -2,6 +2,17 @@
    EL: INPUTS
    ========================================================================== */
 
+input,
+.input,
+.input::before {
+    background-color: transparent !important;
+    color: var(--color-second) !important;
+}
+
+.input {
+    border: 1px solid var(--color-second);
+}
+
 input {
     border: none;
     outline: none;

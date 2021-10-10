@@ -19,6 +19,7 @@ export const state = () => ({
     darkModeCookie: null,
     preferencesInCookies: false,
     setDMListener: false,
+    transitionName: { name: 'page', mode: '' },
 
     navigationItems: [
         { name: 'Home', route: { name: 'index' } },
@@ -124,9 +125,9 @@ export const actions = {
     async nuxtClientInit({ commit, dispatch }, { app }) {
         commit('preferencesInCookies');
 
-        setTimeout(() => {
-            dispatch('prefersDarkScheme');
-        }, 0);
+        // setTimeout(() => {
+        //     dispatch('prefersDarkScheme');
+        // }, 0);
     },
     prefersDarkScheme({ state, commit }) {
         /**
@@ -411,12 +412,10 @@ export const actions = {
             .then(res => {
                 commit('updateReviewsList', res.reviews);
                 commit('updateBeerList', [res.beer]);
+                return res.statusCode;
             })
             .catch(err => {
                 console.warn('Get beer error :>> ', err);
-            })
-            .finally(() => {
-                return;
             });
     },
     async addNewBeer({ commit }, params) {

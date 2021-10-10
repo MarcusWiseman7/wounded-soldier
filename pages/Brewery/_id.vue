@@ -1,20 +1,26 @@
 <template>
     <div v-if="brewery" class="brewery">
-        <div class="back" @click="$goBackOrIndex">
-            <img src="@/assets/icons/arrow_back.svg" alt="Back" />
-        </div>
-        <div class="brewery__title-row">
-            <div class="brewery__title-row--half">
-                <b-pic :src="brewery.logo ? brewery.logo : ''" alt="Logo"></b-pic>
+        <div class="brewery__top">
+            <div class="back" @click="$goBackOrIndex">
+                <back-icon></back-icon>
             </div>
-            <div class="brewery__info brewery__title-row--half">
-                <h1>{{ brewery.name }}</h1>
+
+            <h1>{{ brewery.name }}</h1>
+        </div>
+
+        <div class="brewery__content">
+            <div class="brewery__logo">
+                <div class="brewery__logo__pic">
+                    <b-pic :publicId="brewery.logoPublicId ? brewery.logoPublicId : ''" alt="Logo"></b-pic>
+                </div>
+            </div>
+            <div class="brewery__info">
                 <h2>{{ brewery.location }}</h2>
                 <p>{{ brewery.type }}</p>
             </div>
         </div>
 
-        <div class="brewery__content">
+        <!-- <div class="brewery__content">
             <b-rating :id="'single-brewery-' + $route.params.id" :rating="brewery.averageBeerRating"></b-rating>
 
             <div class="brewery__stats">
@@ -33,22 +39,21 @@
             </div>
 
             <brewery-beers :beers="beers" :breweryLogo="brewery.logo"></brewery-beers>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
-import helpers from '@/helpers';
+import BackIcon from '@/assets/icons/general/arrow_back.svg?inline';
 
 export default {
     name: 'Brewery',
     layout: ctx => (ctx.$device.isMobile ? 'mobile' : 'desktop'),
-    transition(to, from) {
-        if (!$nuxt.$device.isMobile || !from) return;
-        const name = to.name === 'Brewery-id' ? 'page-forward' : 'page-back';
-        return { name, mode: '' };
-    },
-    mixins: [helpers],
+    // transition(to, from) {
+    //     if (!$nuxt.$device.isMobile || !from) return;
+    //     return $nuxt.$store.state.transitionName;
+    // },
+    components: { BackIcon },
     async asyncData({ params, store, redirect }) {
         if (!params.id) return redirect('/');
         if (!store.getters.allBreweries.hasOwnProperty(params.id)) {
@@ -60,53 +65,32 @@ export default {
 
         return { brewery, beers };
     },
-    data() {
-        return {};
-    },
 };
 </script>
 
 <style lang="scss" scoped>
 .brewery {
-    padding: 40px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-
-    &__title-row {
+    &__top {
         display: flex;
-        margin-bottom: 40px;
-
-        &--half {
-            width: 50%;
-
-            img {
-                width: 100px;
-            }
-
-            &:first-child {
-                padding-right: 10px;
-                display: flex;
-                justify-content: flex-end;
-            }
-
-            &:last-child {
-                padding-left: 10px;
-            }
-        }
     }
 
     &__content {
-        width: 100%;
-        max-width: 600px;
+        display: flex;
+    }
+
+    &__logo {
+        width: 40%;
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 40px;
+
+        &__pic {
+            width: 160px;
+            height: 160px;
+        }
     }
 
     &__info {
-        h1 {
-            color: var(--color-main);
-            font-weight: 500;
-        }
     }
 
     &__stats {
@@ -142,10 +126,10 @@ export default {
 }
 
 .back {
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding: 20px;
+    // position: absolute;
+    // left: 0;
+    // top: 0;
+    padding: 0 20px 20px 20px;
     cursor: pointer;
 }
 </style>

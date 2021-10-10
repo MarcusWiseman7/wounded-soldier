@@ -1,38 +1,50 @@
 <template>
     <div v-if="beer" class="beer">
-        <div class="back" @click="goBack">
-            <img src="@/assets/icons/arrow_back.svg" alt="Back" />
-        </div>
-        <div class="beer__title-row">
-            <div class="beer__title-row--half">
-                <div class="beer__logo">
-                    <nuxt-link :to="`/SingleBrewery/${beer.brewery._id}`">
-                        <b-pic
-                            :src="beer.logo || beer.brewery.logo ? beer.logo || beer.brewery.logo : ''"
-                            alt="Logo"
-                        ></b-pic>
-                    </nuxt-link>
-                </div>
+        <div class="beer__logo-row">
+            <div class="back" :class="{ 'back--mobile': mobile }" @click="goBack">
+                <back-icon></back-icon>
             </div>
-            <div class="beer__info beer__title-row--half">
-                <nuxt-link :to="`/SingleBrewery/${beer.brewery._id}`">
-                    <h1>{{ beer.brewery.name }}</h1>
+        </div>
+
+        <div class="beer__label">
+            <nuxt-link :to="`/Brewery/${beer.brewery._id}`" class="logo">
+                <div v-if="beer.logoPublicId || beer.brewery.logoPublicId">
+                    <cld-image
+                        :public-id="beer.logoPublicId || beer.brewery.logoPublicId"
+                        alt="logo"
+                        fetchFormat="auto"
+                        loading="lazy"
+                    >
+                        <cld-placeholder type="blur" />
+                    </cld-image>
+                </div>
+                <div v-else class="placeholder">
+                    <BeerSVG></BeerSVG>
+                </div>
+            </nuxt-link>
+            <div class="info">
+                <div class="name">{{ beer.beerName }}</div>
+                <nuxt-link :to="`/Brewery/${beer.brewery._id}`" class="brewery">
+                    {{ beer.brewery.name }}
                 </nuxt-link>
-                <h2>{{ beer.beerName }}</h2>
-                <p>{{ beer.style }}</p>
+                <div class="style">{{ beer.style }}</div>
             </div>
         </div>
 
         <div v-if="!reviewing" class="beer__content">
-            <b-rating :id="'single-beer-' + id" :rating="beer.averageRating"></b-rating>
+            <!-- <b-rating :id="'single-beer-' + id" :rating="beer.averageRating"></b-rating> -->
 
             <div class="beer__stats">
                 <div class="beer__stats--half">
-                    <div class="beer__stat">{{ beer.degrees }}</div>
-                    <div class="beer__stat">{{ beer.totalNumberOfRatings }} reviews</div>
+                    <div class="beer__stat">{{ beer.averageRating }}&#9733;</div>
+                    <div class="beer__stat">
+                        {{ beer.totalNumberOfRatings }} rating{{ beer.totalNumberOfRatings > 1 ? 's' : '' }}
+                    </div>
                 </div>
+
                 <div class="beer__stats--half">
-                    <div class="beer__stat">{{ beer.abv || '-' }} abv</div>
+                    <!-- <div class="beer__stat">{{ beer.abv || '-' }} abv</div> -->
+                    <div class="beer__stat">{{ beer.degrees }}&deg;</div>
                     <div class="beer__stat">{{ beer.bi || '-' }} bi</div>
                 </div>
             </div>
@@ -43,32 +55,23 @@
 
             <beer-reviews :reviews="reviews"></beer-reviews>
         </div>
+
         <beer-review-form v-else :beer="beer" @close="reviewing = false"></beer-review-form>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import helpers from '@/helpers';
+import BackIcon from '@/assets/icons/general/arrow_back.svg?inline';
 
 export default {
     name: 'Beer',
     layout: ctx => (ctx.$device.isMobile ? 'mobile' : 'desktop'),
-    transition(to, from) {
-        if (!$nuxt.$device.isMobile || !from) return;
-        const name = to.name === 'Beer-id' ? 'page-forward' : 'page-back';
-        return { name, mode: '' };
-    },
-    mixins: [helpers],
-    async asyncData({ params, store, redirect }) {
-        if (!params.id) return redirect('/');
-        if (!store.getters.allBeers.hasOwnProperty(params.id)) {
-            await store.dispatch('getBeer', params.id);
-        }
-        const beer = store.getters.allBeers[params.id];
-        const reviews = store.state.reviews.filter(x => x.beer == beer._id);
-        return { beer, reviews };
-    },
+    // transition(to, from) {
+    //     if (!$nuxt.$device.isMobile || !from) return;
+    //     return $nuxt.$store.state.transitionName;
+    // },
+    components: { BackIcon },
     data() {
         return {
             reviewing: false,
@@ -76,8 +79,8 @@ export default {
     },
     computed: {
         ...mapGetters(['allBeers', 'myId']),
-        id() {
-            return this.$route.params.id;
+        mobile() {
+            return this.$device.isMobile;
         },
     },
     methods: {
@@ -93,10 +96,19 @@ export default {
             }
         },
     },
-    created() {
-        if (!this.$route.params || !this.$route.params.hasOwnProperty('id') || !this.$route.params.id) {
-            this.$router.replace('/');
+    async asyncData({ params, store, redirect, error }) {
+        if (!params.id) return redirect('/');
+        const id = params.id;
+
+        if (!store.getters.allBeers.hasOwnProperty(id)) {
+            const res = await store.dispatch('getBeer', id);
+            if (!res) error({ statusCode: 404 });
         }
+
+        const beer = store.getters.allBeers[id];
+        const reviews = store.state.reviews.filter(x => x.beer == beer._id);
+
+        return { beer, reviews, id };
     },
 };
 </script>
@@ -107,32 +119,68 @@ export default {
 }
 
 .beer {
-    padding: 40px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
 
-    &__title-row {
+    &__logo-row {
         display: flex;
-        margin-bottom: 40px;
+        justify-content: space-between;
+        width: 100%;
 
-        &--half {
-            width: 50%;
+        .back {
+            padding: 10px 20px 20px 20px;
+            cursor: pointer;
 
-            img {
+            &--mobile {
+                padding: 8px 16px 16px 16px;
+
+                svg {
+                    height: 24px;
+                    width: 24px;
+                }
+            }
+        }
+    }
+
+    &__label {
+        width: 100%;
+        display: flex;
+        margin-top: 30px;
+        gap: 10px;
+        overflow: hidden;
+
+        .logo {
+            /deep/ img {
+                height: 100px;
                 width: 100px;
+                border-radius: 4px;
             }
+        }
 
-            &:first-child {
-                padding-right: 10px;
-                display: flex;
-                justify-content: flex-end;
-            }
+        .info {
+            display: flex;
+            flex-flow: column wrap;
+            gap: 4px;
+        }
 
-            &:last-child {
-                padding-left: 10px;
-            }
+        .name {
+            font-size: 48px;
+            // media queries for font-size
+            font-weight: 600;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .brewery {
+            font-size: 24px;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .style {
+            font-size: 22px;
         }
     }
 
@@ -183,13 +231,5 @@ export default {
     &__actions {
         padding: 0 10px;
     }
-}
-
-.back {
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding: 20px;
-    cursor: pointer;
 }
 </style>

@@ -105,7 +105,7 @@ export default {
         }
 
         &--active {
-            background: var(--bg-second);
+            background: var(--color-bg-second);
             color: var(--color-main);
 
             svg {
@@ -224,8 +224,8 @@ footer {
                     height: 60px;
                     width: 30px;
                     border-radius: 0 0 30px 0;
-                    box-shadow: 0 30px 0 0 var(--bg-second);
-                    background-color: var(--bg);
+                    box-shadow: 0 30px 0 0 var(--color-bg-second);
+                    background-color: var(--color-bg);
                 }
 
                 &::after {
@@ -236,8 +236,8 @@ footer {
                     height: 60px;
                     width: 30px;
                     border-radius: 0 30px 0 0;
-                    box-shadow: 0 -30px 0 0 var(--bg-second);
-                    background-color: var(--bg);
+                    box-shadow: 0 -30px 0 0 var(--color-bg-second);
+                    background-color: var(--color-bg);
                 }
             }
         }
@@ -255,7 +255,7 @@ footer {
     top: 0;
     bottom: 0;
     left: 0;
-    background-color: var(--bg-second);
+    background-color: var(--color-bg-second);
     z-index: 44;
 
     .nav {
@@ -263,7 +263,7 @@ footer {
 
         &__item {
             height: 54px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--color-border);
 
             &:last-child {
                 border: none;
@@ -280,7 +280,7 @@ footer {
             }
 
             &--active {
-                background: var(--bg-second);
+                background: var(--color-bg-second);
                 color: var(--color-main);
 
                 svg {

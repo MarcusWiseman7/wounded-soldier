@@ -61,31 +61,3 @@
         grid-column-gap: 50px;
     }
 }
-
-// COLOR THEMES
-// credits: https://codyhouse.co/blog/post/how-to-combine-sass-color-functions-and-css-variables
-@mixin defineColorHSL($color, $hue, $saturation, $lightness) {
-    #{$color}: unquote('hsl(#{$hue}, #{$saturation}, #{$lightness})');
-    #{$color}-h: #{$hue};
-    #{$color}-s: #{$saturation};
-    #{$color}-l: #{$lightness};
-}
-
-@function lightness($color, $lightnessMultiplier) {
-    $color: str-replace($color, 'var(');
-    $color: str-replace($color, ')');
-    $color-h: var(#{$color + '-h'});
-    $color-s: var(#{$color + '-s'});
-    $color-l: var(#{$color + '-l'});
-    @return hsl($color-h, $color-s, calc(#{$color-l} * #{$lightnessMultiplier}));
-}
-
-// return css color variable with different opacity value
-@function alpha($color, $opacity) {
-    $color: str-replace($color, 'var(');
-    $color: str-replace($color, ')');
-    $color-h: var(#{$color + '-h'});
-    $color-s: var(#{$color + '-s'});
-    $color-l: var(#{$color + '-l'});
-    @return hsla($color-h, $color-s, $color-l, $opacity);
-}

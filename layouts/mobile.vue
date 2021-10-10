@@ -3,15 +3,14 @@
         <header>
             <menu-icon class="hamburger" @click="openMenu = true"></menu-icon>
         </header>
-        <div v-if="$route.name === 'index'" class="spacer"></div>
 
         <transition name="slide-side">
             <main-nav v-if="openMenu" :mobile="true" @close="openMenu = false"></main-nav>
         </transition>
 
-        <div class="content" :class="{ 'content--index': $route.name === 'index' }">
+        <div class="content">
             <div class="main">
-                <div v-if="$route.name === 'index'" class="foam">
+                <div class="foam">
                     <foam-b-g></foam-b-g>
                 </div>
                 <div class="page-inner">
@@ -64,33 +63,20 @@ header {
     }
 }
 
-.spacer {
-    position: fixed;
-    top: 44px;
-    left: 0;
-    right: 0;
-    height: 86px;
-    z-index: var(--z-mobile-header-spacer);
-    background: #3c3737;
-}
-
 .content {
-    padding-top: 46px;
-
-    &--index {
-        padding-top: 130px;
-    }
+    padding: 130px 8px 0 8px;
 }
 
 .main {
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: var(--bg-second);
+    background-color: var(--color-bg-second);
+    border-radius: 4px 4px 0 0;
 
     .foam {
         position: absolute;
-        right: -3px;
+        right: 2px;
         top: -67px;
         width: 58%;
         z-index: var(--z-foam);
@@ -99,6 +85,11 @@ header {
 
 // foam svg
 .color-object {
-    fill: var(--bg-third);
+    fill: var(--color-bg-third);
+}
+
+.page-inner {
+    border-radius: 4px 4px 0 0;
+    padding: 8px;
 }
 </style>

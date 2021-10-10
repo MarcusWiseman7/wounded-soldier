@@ -125,10 +125,11 @@ header {
 
 // foam svg
 .color-object {
-    fill: var(--bg-third);
+    fill: var(--color-bg-third);
 }
 
 .page-inner {
     border-radius: 30px 30px 0px 0px;
+    padding: 30px;
 }
 </style>

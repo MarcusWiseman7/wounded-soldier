@@ -1,13 +1,6 @@
 <template>
     <ul v-if="beers">
-        <nuxt-link
-            v-for="b in beers"
-            :key="b._id"
-            :to="`/SingleBeer/${b._id}`"
-            class="beer"
-            custom
-            v-slot="{ navigate }"
-        >
+        <nuxt-link v-for="b in beers" :key="b._id" :to="`/Beer/${b._id}`" class="beer" custom v-slot="{ navigate }">
             <li @click="navigate">
                 <b-pic :src="b.logo || breweryLogo ? b.logo || breweryLogo : ''" alt="Logo"></b-pic>
 
