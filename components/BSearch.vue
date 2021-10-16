@@ -1,6 +1,7 @@
 <template>
     <div class="input-wrapper">
         <div class="search-area">
+            <search-icon></search-icon>
             <input
                 @click.stop="onfocus"
                 @touchstart.stop="onfocus"
@@ -18,23 +19,12 @@
                 maxlength="50"
             />
             <div class="search-area__state">
-                <img
-                    v-if="loading"
-                    class="search-area__state--loading"
-                    src="@/assets/icons/rotate.svg"
-                    alt="loading"
-                    width="16"
-                    height="16"
-                />
-                <img
-                    v-if="searchValid && !loading"
-                    @click="clearFld"
-                    class="search-area__state--clear"
-                    src="@/assets/icons/general/closer.svg"
-                    alt="clear"
-                    width="16"
-                    height="16"
-                />
+                <div v-if="loading" class="search-area__state--loading">
+                    <rotate-icon></rotate-icon>
+                </div>
+                <div class="search-area__state--clear" v-if="searchValid && !loading" @click="clearFld">
+                    <cross-icon></cross-icon>
+                </div>
             </div>
         </div>
     </div>
@@ -43,9 +33,13 @@
 <script>
 import { mapState } from 'vuex';
 import debounce from '@/debounce';
+import SearchIcon from '@/assets/icons/general/search.svg?inline';
+import CrossIcon from '@/assets/icons/general/closer.svg?inline';
+import RotateIcon from '@/assets/icons/rotate.svg?inline';
 
 export default {
     name: 'BSearch',
+    components: { SearchIcon, CrossIcon, RotateIcon },
     data() {
         return {
             query: '',
@@ -106,7 +100,6 @@ export default {
 
 <style lang="scss" scoped>
 $search-height: 60px;
-$border: #e6e6e6;
 
 .input-wrapper {
     position: relative;
@@ -153,12 +146,18 @@ $border: #e6e6e6;
         top: 0;
         height: 100%;
 
+        svg,
         img {
             height: 100%;
             padding: 0px 22px;
             box-sizing: content-box;
             cursor: pointer;
             user-select: none;
+        }
+
+        svg {
+            height: 16px;
+            width: 16px;
         }
     }
 }
@@ -168,8 +167,7 @@ $border: #e6e6e6;
     width: 100%;
     height: $search-height;
     border-radius: $search-height/2;
-    // background: #fafafa;
-    border: 1px solid $border;
+    border: 1px solid var(--color-border);
 
     @include breakpoint(d) {
         width: 80%;
@@ -206,17 +204,20 @@ $border: #e6e6e6;
         background: transparent;
         font-size: 26px;
         letter-spacing: -0.01em;
-        padding-left: 36px;
-        background: url(../assets/icons/search.svg) no-repeat left center;
+        padding-left: 6px;
 
         &::placeholder {
             font-size: 26px;
             font-weight: 400;
             letter-spacing: -0.02em;
-            color: #999;
+            color: var(--color-text-second);
             background-size: 26px 26px;
             opacity: 1;
         }
     }
+}
+
+.color-object {
+    fill: var(--color-text);
 }
 </style>

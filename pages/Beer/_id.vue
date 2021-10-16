@@ -67,10 +67,6 @@ import BackIcon from '@/assets/icons/general/arrow_back.svg?inline';
 export default {
     name: 'Beer',
     layout: ctx => (ctx.$device.isMobile ? 'mobile' : 'desktop'),
-    // transition(to, from) {
-    //     if (!$nuxt.$device.isMobile || !from) return;
-    //     return $nuxt.$store.state.transitionName;
-    // },
     components: { BackIcon },
     data() {
         return {
@@ -78,9 +74,15 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['allBeers', 'myId']),
+        ...mapGetters(['myId']),
         mobile() {
             return this.$device.isMobile;
+        },
+        reviews() {
+            return this.$store.state.reviews.filter(x => x.beer === this.beer._id);
+        },
+        breweryBeers() {
+            return this.$store.state.beers.filter(x => x.brewery._id === this.beer.brewery._id);
         },
     },
     methods: {
@@ -96,6 +98,10 @@ export default {
             }
         },
     },
+    created() {
+        this.$store.dispatch('getReviews', this.id);
+        this.$store.dispatch('getBreweryBeers', this.beer.brewery._id);
+    },
     async asyncData({ params, store, redirect, error }) {
         if (!params.id) return redirect('/');
         const id = params.id;
@@ -106,9 +112,7 @@ export default {
         }
 
         const beer = store.getters.allBeers[id];
-        const reviews = store.state.reviews.filter(x => x.beer == beer._id);
-
-        return { beer, reviews, id };
+        return { beer, id };
     },
 };
 </script>

@@ -290,8 +290,8 @@ $search-height: 36px;
     width: 100%;
     height: $search-height;
     border-radius: $search-height/2;
-    background: #fafafa;
-    // border: 1px solid $border;
+    // background: #fafafa;
+    border: 1px solid var(--color-border);
 
     @include breakpoint(t) {
         height: 44px;
@@ -338,7 +338,7 @@ $search-height: 36px;
 
         &:placeholder-shown {
             padding-left: 22px;
-            background: url(../assets/icons/search.svg) no-repeat left center;
+            // background: url(../assets/icons/search.svg) no-repeat left center;
         }
     }
 }

@@ -5,41 +5,51 @@
                 <back-icon></back-icon>
             </div>
 
-            <h1>{{ brewery.name }}</h1>
+            <div class="name">{{ brewery.name }}</div>
         </div>
 
         <div class="brewery__content">
             <div class="brewery__logo">
-                <div class="brewery__logo__pic">
-                    <b-pic :publicId="brewery.logoPublicId ? brewery.logoPublicId : ''" alt="Logo"></b-pic>
-                </div>
+                <cld-image
+                    v-if="brewery.logoPublicId"
+                    :public-id="brewery.logoPublicId"
+                    alt="logo"
+                    fetchFormat="auto"
+                    loading="lazy"
+                >
+                    <cld-placeholder type="blur" />
+                </cld-image>
+                <BeerSVG v-else></BeerSVG>
             </div>
+
             <div class="brewery__info">
-                <h2>{{ brewery.location }}</h2>
-                <p>{{ brewery.type }}</p>
+                <div class="type">
+                    <span>{{ brewery.type }}</span>
+                    <star-rating
+                        :count="brewery.totalNumberOfBeerRatings"
+                        :rating="brewery.averageBeerRating"
+                    ></star-rating>
+                </div>
+                <div class="location">{{ brewery.location }}</div>
+                <div class="description">
+                    <clamped-text :text="brewery.description"></clamped-text>
+                </div>
             </div>
         </div>
 
-        <!-- <div class="brewery__content">
-            <b-rating :id="'single-brewery-' + $route.params.id" :rating="brewery.averageBeerRating"></b-rating>
-
-            <div class="brewery__stats">
-                <div class="brewery__stats--half">
-                    <div class="brewery__stat">{{ brewery.totalNumberOfBeerRatings }} reviews</div>
-                    <div class="brewery__stat"></div>
-                </div>
-                <div class="brewery__stats--half">
-                    <div class="brewery__stat"></div>
-                    <div class="brewery__stat"></div>
-                </div>
-            </div>
-
-            <div class="brewery__beers-headline">
-                <h2>{{ brewery.name }} beers</h2>
-            </div>
-
-            <brewery-beers :beers="beers" :breweryLogo="brewery.logo"></brewery-beers>
-        </div> -->
+        <div class="brewery__beers">
+            <div class="title">{{ brewery.name }} beers</div>
+            <b-horizontal-wrapper v-slot="slotProps" :shift="248" :snapping="true" :scrollid="'scroll-top-beers'">
+                <b-card
+                    v-for="(item, i) in beers"
+                    :key="'b-card-' + i"
+                    :modifiers="['mobile']"
+                    :item="item"
+                    :hovered="slotProps.isHovered"
+                    :dragging="slotProps.isDragging"
+                ></b-card>
+            </b-horizontal-wrapper>
+        </div>
     </div>
 </template>
 
@@ -49,10 +59,6 @@ import BackIcon from '@/assets/icons/general/arrow_back.svg?inline';
 export default {
     name: 'Brewery',
     layout: ctx => (ctx.$device.isMobile ? 'mobile' : 'desktop'),
-    // transition(to, from) {
-    //     if (!$nuxt.$device.isMobile || !from) return;
-    //     return $nuxt.$store.state.transitionName;
-    // },
     components: { BackIcon },
     async asyncData({ params, store, redirect }) {
         if (!params.id) return redirect('/');
@@ -72,64 +78,70 @@ export default {
 .brewery {
     &__top {
         display: flex;
+
+        .back {
+            padding: 0 20px 20px 20px;
+            cursor: pointer;
+
+            &--mobile {
+                padding: 8px 16px 16px 16px;
+
+                svg {
+                    height: 24px;
+                    width: 24px;
+                }
+            }
+        }
+
+        .name {
+            font-weight: 600;
+            font-size: 26px;
+        }
     }
 
     &__content {
         display: flex;
+        gap: 20px;
     }
 
     &__logo {
-        width: 40%;
-        display: flex;
-        justify-content: flex-end;
-        padding-right: 40px;
-
-        &__pic {
-            width: 160px;
-            height: 160px;
+        /deep/ img {
+            height: 100px;
+            width: 100px;
+            border-radius: 4px;
         }
     }
 
     &__info {
-    }
+        .type {
+            display: flex;
+            gap: 14px;
+            font-size: 18px;
+        }
 
-    &__stats {
-        display: flex;
-        width: 100%;
-        max-width: 800px;
-        margin: 40px 0;
-        height: 140px;
+        .location {
+            font-weight: 500;
+            font-size: 18px;
+            margin-top: 4px;
+        }
 
-        &--half {
-            width: 50%;
-
-            &:first-child {
-                border-right: 1px solid var(--color-text-second);
-            }
+        .description {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 22px;
+            margin-top: 16px;
+            text-align: justify;
         }
     }
 
-    &__stat {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        height: 50%;
-    }
+    &__beers {
+        margin-top: 40px;
 
-    &__beers-headline {
-        text-align: center;
-        margin: 40px 0;
-        padding-bottom: 8px;
-        border-bottom: 1px solid var(--color-main);
+        .title {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
     }
-}
-
-.back {
-    // position: absolute;
-    // left: 0;
-    // top: 0;
-    padding: 0 20px 20px 20px;
-    cursor: pointer;
 }
 </style>

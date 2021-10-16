@@ -181,6 +181,19 @@ router.get('/allBeers', async (req, res) => {
     }
 });
 
+router.get('/allBreweryBeers/:id', async (req, res) => {
+    try {
+        const beers = await Beer.find({ brewery: req.params.id })
+            .select(beerSelect)
+            .populate({ path: 'brewery', model: Brewery, select: brewerySelect });
+        if (!beers) return res.status(404).send({ statusCode: -2, message: `DB find error: no beers` });
+
+        res.status(200).send({ statusCode: 1, beers });
+    } catch (err) {
+        return res.status(400).send({ statusCode: -1, catchError: err });
+    }
+});
+
 // Update beer
 router.patch('/:id', async (req, res) => {
     try {

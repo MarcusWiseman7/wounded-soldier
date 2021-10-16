@@ -14,11 +14,7 @@ export const state = () => ({
     searchQuery: '',
     authContact: null,
     routeBack: false,
-
-    prefersDarkScheme: false,
-    darkModeCookie: null,
     preferencesInCookies: false,
-    setDMListener: false,
     transitionName: { name: 'page', mode: '' },
 
     navigationItems: [
@@ -99,13 +95,7 @@ export const mutations = {
 };
 
 export const actions = {
-    async nuxtServerInit({ commit }, { app, $cookies }) {
-        const darkMode = $cookies.get('prefersDarkScheme');
-        if (darkMode) {
-            commit('setObj', { name: 'prefersDarkScheme', obj: darkMode == '2' });
-            commit('setObj', { name: 'darkModeCookie', obj: darkMode });
-        }
-
+    async nuxtServerInit({ commit }, { app }) {
         await app.$axios
             .$get('/api/beers/topBeers')
             .then(res => {
@@ -122,51 +112,8 @@ export const actions = {
                 return;
             });
     },
-    async nuxtClientInit({ commit, dispatch }, { app }) {
+    async nuxtClientInit({ commit }, {}) {
         commit('preferencesInCookies');
-
-        // setTimeout(() => {
-        //     dispatch('prefersDarkScheme');
-        // }, 0);
-    },
-    prefersDarkScheme({ state, commit }) {
-        /**
-            prefersDarkScheme cookie:
-                1: Light
-                2: Dark
-                3: Auto
-
-            Update app color scheme:
-                commit('prefersDarkScheme', Boolean);
-                    True: Dark
-                    False: Light
-         */
-
-        if (process.client) {
-            const darkModeCookie = this.$cookies.get('prefersDarkScheme');
-            const darkModeWindow = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-            if (darkModeCookie) {
-                commit('setObj', { name: 'darkModeCookie', obj: darkModeCookie });
-            }
-            if (darkModeCookie && darkModeCookie !== '3') {
-                commit('setObj', { name: 'prefersDarkScheme', obj: darkModeCookie === '2' });
-            } else {
-                commit('setObj', { name: 'prefersDarkScheme', obj: darkModeWindow });
-            }
-
-            document.documentElement.setAttribute('data-theme', state.prefersDarkScheme ? 'dark' : 'light');
-
-            if (!state.setDMListener) {
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-                    const dmc = this.$cookies.get('prefersDarkScheme');
-                    if (dmc && dmc !== '3') return;
-                    commit('setObj', { name: 'prefersDarkScheme', obj: e.matches });
-                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-                });
-                commit('setObj', { name: 'setDMListener', obj: true });
-            }
-        }
     },
     async setCookie({ commit, dispatch }, blah) {
         const c = blah.split('=');
@@ -418,6 +365,17 @@ export const actions = {
                 console.warn('Get beer error :>> ', err);
             });
     },
+    getBreweryBeers({ commit }, id) {
+        this.$axios
+            .$get(`/api/beers/allBreweryBeers/${id}`)
+            .then(res => {
+                commit('updateBeerList', res.beers);
+            })
+            .catch(err => {
+                console.warn('Get brewery beers error :>> ', err);
+            });
+    },
+    getBeerReviews({ commit }, id) {},
     async addNewBeer({ commit }, params) {
         commit('toggle', 'loading');
 

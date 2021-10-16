@@ -19,59 +19,65 @@
 
         <div class="card__content">
             <div class="card__content__inner">
-                <div class="card__content__desc">
-                    <div
-                        v-if="publicId"
-                        class="card__logo"
-                        :class="{ 'card__logo--large': modifiers.includes('full-card') }"
+                <!-- if brewery show it's logo -->
+                <div
+                    v-if="!isBeer"
+                    class="card__logo"
+                    :class="{ 'card__logo--large': modifiers.includes('full-card') }"
+                >
+                    <cld-image
+                        v-if="item.logoPublicId"
+                        :public-id="item.logoPublicId"
+                        alt="logo"
+                        fetchFormat="auto"
+                        loading="lazy"
                     >
-                        <cld-image :public-id="publicId" alt="logo" fetchFormat="auto" loading="lazy">
+                        <cld-placeholder type="blur" />
+                    </cld-image>
+                    <BeerSVG v-else></BeerSVG>
+                </div>
+
+                <div class="card__content__info">
+                    <!-- if beer show brewery info -->
+                    <div class="brewery" v-if="isBeer">
+                        <cld-image
+                            v-if="item.brewery.logoPublicId"
+                            :public-id="item.brewery.logoPublicId"
+                            alt="logo"
+                            fetchFormat="auto"
+                            loading="lazy"
+                        >
                             <cld-placeholder type="blur" />
                         </cld-image>
+                        <div v-else class="placeholder">
+                            <BeerSVG></BeerSVG>
+                        </div>
+                        <span>{{ item.brewery.name }}</span>
                     </div>
-                    <div v-else class="placeholder">
-                        <BeerSVG></BeerSVG>
-                    </div>
-
-                    <div class="card__content__names">
-                        <h3>{{ item.name || item.beerName }}</h3>
-                        <span class="bolder" v-if="item.brewery">{{ item.brewery.name }}</span>
-                        <span>{{ item.style }}</span>
-                    </div>
-                </div>
-
-                <div v-if="modifiers.includes('full-card')" class="full-card">
-                    <v-clamp :max-lines="2" tag="p" ellipsis="">
-                        <template>{{ item.brewery.description }}</template>
-                        <template v-slot:after="{ clamped }">
-                            <span v-if="clamped">... <span class="underline">more</span></span>
-                        </template>
-                    </v-clamp>
+                    <span class="name">{{ item.name || item.beerName }}</span>
+                    <span>{{ item.style }}</span>
                 </div>
             </div>
 
-            <div class="rating">
-                <span :class="{ 'rating--gold': item.averageRating > 4.5 }">{{ item.averageRating }}&#9733;</span>
-                <span class="rating__count"
-                    >{{ item.totalNumberOfRatings }} rating{{ item.totalNumberOfRatings > 1 ? 's' : '' }}</span
-                >
+            <div class="card__content__news" v-if="modifiers.includes('full-card')">
+                <clamped-text :text="item.brewery.description"></clamped-text>
             </div>
+
+            <star-rating :count="item.totalNumberOfRatings" :rating="item.averageRating"></star-rating>
         </div>
     </nuxt-link>
 </template>
 
 <script>
-import VClamp from 'vue-clamp';
 import { mapState } from 'vuex';
 
 export default {
     name: 'BCard',
     props: {
-        item: { type: Object, default: () => null },
+        item: { type: Object, required: true },
         modifiers: { type: Array, default: () => [] },
         dragging: { type: Boolean, default: false },
     },
-    components: { VClamp },
     computed: {
         ...mapState(['stockPhotos']),
         mobile() {
@@ -83,9 +89,6 @@ export default {
         isBeer() {
             return this.item.hasOwnProperty('brewery');
         },
-        publicId() {
-            return this.item.logoPublicId || (this.item.hasOwnProperty('brewery') && this.item.brewery.logoPublicId);
-        },
     },
 };
 </script>
@@ -93,28 +96,6 @@ export default {
 <style lang="scss" scoped>
 .disabled {
     pointer-events: none;
-}
-
-.rating {
-    display: flex;
-    font-size: 16px;
-    line-height: 20px;
-
-    span {
-        display: flex;
-        align-items: center;
-        height: 100%;
-    }
-
-    &__count {
-        color: var(--color-info);
-        font-size: 10px;
-        margin-left: 6px;
-    }
-
-    &--gold {
-        color: gold;
-    }
 }
 
 .card {
@@ -183,10 +164,6 @@ export default {
     &--desktop {
         width: calc(25% - 9px);
 
-        // &:nth-child(4n) {
-        //     margin-right: 0;
-        // }
-
         &.card--full-card {
             width: calc(50% - 6px);
 
@@ -220,33 +197,45 @@ export default {
         width: 100%;
         height: 100%;
 
-        &__desc {
+        &__inner {
             display: flex;
-            margin-bottom: 20px;
+            gap: 10px;
         }
 
-        &__names {
+        &__info {
             display: flex;
             flex-direction: column;
             color: var(--color-text-second);
             font-size: 14px;
             line-height: 20px;
-            margin-left: 10px;
             font-weight: 400;
 
-            .bolder {
-                font-weight: 600;
+            .name {
+                font-weight: 700;
+                font-size: 22px;
+                color: var(--color-text);
+                margin-top: 6px;
             }
 
-            h3 {
-                color: var(--color-text);
+            .brewery {
+                display: flex;
+                align-items: center;
+                font-weight: 600;
+
+                /deep/ img {
+                    height: 30px;
+                    width: 30px;
+                    border-radius: 4px;
+                    margin-right: 6px;
+                }
             }
         }
 
-        .full-card {
+        &__news {
             font-size: 14px;
             line-height: 20px;
-            margin-bottom: 14px;
+            text-align: justify;
+            margin: 14px 0;
         }
     }
 
@@ -263,10 +252,5 @@ export default {
             z-index: 1;
         }
     }
-}
-
-.underline {
-    text-decoration: underline;
-    font-size: 12px;
 }
 </style>
