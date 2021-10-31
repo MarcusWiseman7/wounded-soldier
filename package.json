@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@nuxtjs/device": "^2.1.0",
-    "@nuxtjs/svg": "^0.1.12",
+    "@nuxtjs/svg": "^0.3.0",
     "node-sass": "^6.0.1",
     "nodemon": "^2.0.12",
     "sass-loader": "^10.2.0"
