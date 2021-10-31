@@ -50,4 +50,9 @@
 // inline svg to text color helper class
 .icon-color-text {
     fill: var(--color-text);
+
+    &--editor {
+        font-size: 20px;
+        font-weight: 600;
+    }
 }

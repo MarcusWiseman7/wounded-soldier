@@ -17,10 +17,65 @@
             <BeerSVG></BeerSVG>
         </div>
 
-        <div class="card__content">
-            <div class="card__content__inner">
-                <!-- if brewery show it's logo -->
-                <div
+        <div class="card__content" v-if="isBeer">
+            <span class="name">{{ item.name || item.beerName }}</span>
+            <span class="style">{{ item.style }}</span>
+
+            <div class="row">
+                <!-- brewery info -->
+                <b-pill>
+                    <template v-slot:icon>
+                        <div class="logo">
+                            <cld-image
+                                v-if="item.brewery.logoPublicId"
+                                :public-id="item.brewery.logoPublicId"
+                                alt="logo"
+                                fetchFormat="auto"
+                                loading="lazy"
+                            >
+                                <cld-placeholder type="blur" />
+                            </cld-image>
+                            <div v-else class="placeholder">
+                                <BeerSVG></BeerSVG>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-slot:title>
+                        <span>{{ item.brewery.name }}</span>
+                    </template>
+                </b-pill>
+
+                <!-- rating info -->
+                <b-pill :modifiers="['rating']">
+                    <template v-slot:icon>
+                        <span class="star">★</span>
+                    </template>
+                    <template v-slot:title>
+                        <span>{{ item.averageRating }}</span>
+                    </template>
+                    <template v-slot:info>
+                        <span
+                            >({{ item.totalNumberOfRatings }} review{{
+                                item.totalNumberOfRatings > 1 ? 's' : ''
+                            }})</span
+                        >
+                    </template>
+                </b-pill>
+            </div>
+
+            <!-- location -->
+            <b-pill v-if="item.brewery.location" :modifiers="['location']">
+                <template v-slot:icon>
+                    <img src="@/assets/icons/flags/czech.svg" alt="" height="12" />
+                </template>
+                <template v-slot:title>
+                    <span>{{ item.brewery.location }}</span>
+                </template>
+            </b-pill>
+
+            <!-- <div class="card__content__inner"> -->
+            <!-- if brewery show it's logo -->
+            <!-- <div
                     v-if="!isBeer"
                     class="card__logo"
                     :class="{ 'card__logo--large': modifiers.includes('full-card') }"
@@ -35,35 +90,20 @@
                         <cld-placeholder type="blur" />
                     </cld-image>
                     <BeerSVG v-else></BeerSVG>
-                </div>
+                </div> -->
 
-                <div class="card__content__info">
-                    <!-- if beer show brewery info -->
-                    <div class="brewery" v-if="isBeer">
-                        <cld-image
-                            v-if="item.brewery.logoPublicId"
-                            :public-id="item.brewery.logoPublicId"
-                            alt="logo"
-                            fetchFormat="auto"
-                            loading="lazy"
-                        >
-                            <cld-placeholder type="blur" />
-                        </cld-image>
-                        <div v-else class="placeholder">
-                            <BeerSVG></BeerSVG>
-                        </div>
-                        <span>{{ item.brewery.name }}</span>
-                    </div>
-                    <span class="name">{{ item.name || item.beerName }}</span>
-                    <span>{{ item.style }}</span>
-                </div>
-            </div>
+            <!-- <div class="card__content__info"> -->
 
-            <div class="card__content__news" v-if="modifiers.includes('full-card')">
+            <!-- <div class="brewery" ></div> -->
+
+            <!-- </div> -->
+            <!-- </div> -->
+
+            <!-- <div class="card__content__news" v-if="modifiers.includes('full-card')">
                 <clamped-text :text="item.brewery.description"></clamped-text>
-            </div>
+            </div> -->
 
-            <star-rating :count="item.totalNumberOfRatings" :rating="item.averageRating"></star-rating>
+            <!-- <star-rating :count="item.totalNumberOfRatings" :rating="item.averageRating"></star-rating> -->
         </div>
     </nuxt-link>
 </template>
@@ -133,32 +173,57 @@ export default {
         }
     }
 
-    &__logo {
-        min-height: 60px;
-        min-width: 60px;
-        height: 60px;
-        width: 60px;
-        border-radius: 4px;
-        z-index: 4;
-        box-shadow: 0 0 4px rgba($color: #fff, $alpha: 0.08);
+    &__content {
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        color: var(--color-text);
+        width: 100%;
+        height: 100%;
+    }
+
+    .name {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .style {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--color-text-second);
+    }
+
+    .logo {
+        height: 26px;
+        width: 26px;
 
         /deep/ img {
-            height: 60px;
-            width: 60px;
-            border-radius: 4px;
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
         }
+    }
 
-        &--large {
-            min-height: 80px;
-            min-width: 80px;
-            height: 80px;
-            width: 80px;
+    .star {
+        color: gold;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding-bottom: 2px;
+    }
 
-            /deep/ img {
-                height: 80px;
-                width: 80px;
-            }
-        }
+    .row {
+        display: flex;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    .news {
+        font-size: 14px;
+        line-height: 20px;
+        text-align: justify;
+        margin: 14px 0;
     }
 
     &--desktop {
@@ -185,57 +250,6 @@ export default {
         &.card--full-card {
             min-width: 100%;
             max-width: 100%;
-        }
-    }
-
-    &__content {
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        color: var(--color-text);
-        width: 100%;
-        height: 100%;
-
-        &__inner {
-            display: flex;
-            gap: 10px;
-        }
-
-        &__info {
-            display: flex;
-            flex-direction: column;
-            color: var(--color-text-second);
-            font-size: 14px;
-            line-height: 20px;
-            font-weight: 400;
-
-            .name {
-                font-weight: 700;
-                font-size: 22px;
-                color: var(--color-text);
-                margin-top: 6px;
-            }
-
-            .brewery {
-                display: flex;
-                align-items: center;
-                font-weight: 600;
-
-                /deep/ img {
-                    height: 30px;
-                    width: 30px;
-                    border-radius: 4px;
-                    margin-right: 6px;
-                }
-            }
-        }
-
-        &__news {
-            font-size: 14px;
-            line-height: 20px;
-            text-align: justify;
-            margin: 14px 0;
         }
     }
 

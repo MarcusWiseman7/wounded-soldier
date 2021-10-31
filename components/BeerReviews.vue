@@ -1,8 +1,6 @@
 <template>
     <ul v-if="reviews">
         <li v-for="r in reviews" :key="r._id" class="review">
-            <b-pic :src="r.pic ? r.pic : ''" alt="Review pic"></b-pic>
-
             <div class="review__info">
                 <div class="review__top-row">
                     <div>
@@ -10,7 +8,7 @@
                         <h3 v-else>Phil</h3>
                         <p>{{ prettyDate(r.date || r.dateCreated) }}</p>
                     </div>
-                    <b-rating :rating="r.rating" :size="16" :id="r._id"></b-rating>
+                    <star-rating :rating="r.rating" :showCount="false"></star-rating>
                 </div>
                 <p v-if="r.notes && r.notes.length > 0" class="review__notes">{{ r.notes }}</p>
             </div>

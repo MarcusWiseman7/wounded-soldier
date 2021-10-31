@@ -4,9 +4,9 @@
             <div class="back" @click="$goBackOrIndex">
                 <back-icon></back-icon>
             </div>
-
-            <div class="name">{{ brewery.name }}</div>
         </div>
+
+        <div class="brewery__name">{{ brewery.name }}</div>
 
         <div class="brewery__content">
             <div class="brewery__logo">
@@ -92,16 +92,17 @@ export default {
                 }
             }
         }
+    }
 
-        .name {
-            font-weight: 600;
-            font-size: 26px;
-        }
+    &__name {
+        font-weight: 600;
+        font-size: 26px;
     }
 
     &__content {
         display: flex;
         gap: 20px;
+        margin-top: 20px;
     }
 
     &__logo {

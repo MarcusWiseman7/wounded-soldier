@@ -1,5 +1,5 @@
 <template>
-    <div class="rating" v-if="count">
+    <div class="rating" v-if="count || !showCount">
         <span class="rating__rate">{{ rating }}</span>
         <span
             class="rating__star"
@@ -10,7 +10,7 @@
         >
             ★
         </span>
-        <span class="rating__count">({{ count }} rating{{ count > 1 ? 's' : '' }})</span>
+        <span class="rating__count" v-if="showCount">({{ count }} rating{{ count > 1 ? 's' : '' }})</span>
     </div>
     <div class="rating" v-else>
         <span class="rating__count">Be the first to rate it!</span>
@@ -21,8 +21,9 @@
 export default {
     name: 'StarRating',
     props: {
-        count: { type: Number, required: true },
+        count: { type: Number, default: 0 },
         rating: { type: Number, required: true },
+        showCount: { type: Boolean, default: true },
     },
 };
 </script>
@@ -30,6 +31,7 @@ export default {
 <style lang="scss" scoped>
 .rating {
     display: flex;
+    align-items: center;
     font-size: 16px;
     font-weight: 00;
     line-height: 20px;
@@ -48,6 +50,8 @@ export default {
         position: relative;
         font-size: 18px;
         width: 16px;
+        min-height: 18px;
+        max-height: 18px;
 
         &::before {
             content: attr(attribute);

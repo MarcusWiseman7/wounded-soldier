@@ -6,34 +6,34 @@
             </div>
         </div>
 
-        <div class="beer__label">
-            <nuxt-link :to="`/Brewery/${beer.brewery._id}`" class="logo">
-                <div v-if="beer.logoPublicId || beer.brewery.logoPublicId">
-                    <cld-image
-                        :public-id="beer.logoPublicId || beer.brewery.logoPublicId"
-                        alt="logo"
-                        fetchFormat="auto"
-                        loading="lazy"
-                    >
-                        <cld-placeholder type="blur" />
-                    </cld-image>
-                </div>
-                <div v-else class="placeholder">
-                    <BeerSVG></BeerSVG>
-                </div>
-            </nuxt-link>
-            <div class="info">
-                <div class="name">{{ beer.beerName }}</div>
+        <div class="beer__can">
+            <div class="beer__label">
                 <nuxt-link :to="`/Brewery/${beer.brewery._id}`" class="brewery">
                     {{ beer.brewery.name }}
                 </nuxt-link>
-                <div class="style">{{ beer.style }}</div>
+                <nuxt-link :to="`/Brewery/${beer.brewery._id}`" class="logo">
+                    <div v-if="beer.logoPublicId || beer.brewery.logoPublicId">
+                        <cld-image
+                            :public-id="beer.logoPublicId || beer.brewery.logoPublicId"
+                            alt="logo"
+                            fetchFormat="auto"
+                            loading="lazy"
+                        >
+                            <cld-placeholder type="blur" />
+                        </cld-image>
+                    </div>
+                    <div v-else class="placeholder">
+                        <BeerSVG></BeerSVG>
+                    </div>
+                </nuxt-link>
+                <div class="name">{{ beer.beerName }}</div>
+                <div class="info">
+                    <div class="style">{{ beer.style }}</div>
+                </div>
             </div>
         </div>
 
-        <div v-if="!reviewing" class="beer__content">
-            <!-- <b-rating :id="'single-beer-' + id" :rating="beer.averageRating"></b-rating> -->
-
+        <div class="beer__content" v-if="!reviewing">
             <div class="beer__stats">
                 <div class="beer__stats--half">
                     <div class="beer__stat">{{ beer.averageRating }}&#9733;</div>
@@ -43,7 +43,6 @@
                 </div>
 
                 <div class="beer__stats--half">
-                    <!-- <div class="beer__stat">{{ beer.abv || '-' }} abv</div> -->
                     <div class="beer__stat">{{ beer.degrees }}&deg;</div>
                     <div class="beer__stat">{{ beer.bi || '-' }} bi</div>
                 </div>
@@ -54,6 +53,20 @@
             </div>
 
             <beer-reviews :reviews="reviews"></beer-reviews>
+        </div>
+
+        <div class="beer__brewery-beers" v-if="!reviewing">
+            <div class="title">More {{ beer.brewery.name }} beers</div>
+            <b-horizontal-wrapper v-slot="slotProps" :shift="248" :snapping="true" :scrollid="'scroll-top-beers'">
+                <b-card
+                    v-for="(item, i) in breweryBeers"
+                    :key="'b-card-' + i"
+                    :modifiers="['mobile']"
+                    :item="item"
+                    :hovered="slotProps.isHovered"
+                    :dragging="slotProps.isDragging"
+                ></b-card>
+            </b-horizontal-wrapper>
         </div>
 
         <beer-review-form v-else :beer="beer" @close="reviewing = false"></beer-review-form>
@@ -82,7 +95,9 @@ export default {
             return this.$store.state.reviews.filter(x => x.beer === this.beer._id);
         },
         breweryBeers() {
-            return this.$store.state.beers.filter(x => x.brewery._id === this.beer.brewery._id);
+            return this.$store.state.beers.filter(
+                x => x.brewery._id === this.beer.brewery._id && x._id !== this.beer._id
+            );
         },
     },
     methods: {
@@ -123,11 +138,6 @@ export default {
 }
 
 .beer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-
     &__logo-row {
         display: flex;
         justify-content: space-between;
@@ -148,18 +158,28 @@ export default {
         }
     }
 
-    &__label {
+    &__can {
         width: 100%;
         display: flex;
-        margin-top: 30px;
-        gap: 10px;
-        overflow: hidden;
+        justify-content: center;
+    }
+
+    &__label {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 16px;
+        padding: 80px 30px;
+        gap: 6px;
+        // box-shadow: 0 0 5px 3px rgba(255, 255, 255, 0.2);
+        background: silver;
 
         .logo {
             /deep/ img {
-                height: 100px;
-                width: 100px;
-                border-radius: 4px;
+                height: 300px;
+                width: 250px;
+                border-radius: 50%;
             }
         }
 
@@ -170,17 +190,22 @@ export default {
         }
 
         .name {
-            font-size: 48px;
+            font-size: 36px;
             // media queries for font-size
             font-weight: 600;
             overflow-wrap: break-word;
             hyphens: auto;
+            background: cornflowerblue;
+            padding: 6px 10px;
+            text-align: center;
         }
 
         .brewery {
-            font-size: 24px;
+            font-size: 36px;
             overflow-wrap: break-word;
             hyphens: auto;
+            color: var(--color-text);
+            text-align: center;
         }
 
         .style {
@@ -234,6 +259,16 @@ export default {
 
     &__actions {
         padding: 0 10px;
+    }
+
+    &__brewery-beers {
+        margin-top: 40px;
+
+        .title {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
     }
 }
 </style>
