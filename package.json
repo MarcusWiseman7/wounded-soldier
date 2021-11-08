@@ -28,7 +28,7 @@
     "@tiptap/extension-text-style": "^2.0.0-beta.19",
     "@tiptap/extension-underline": "^2.0.0-beta.18",
     "@tiptap/starter-kit": "^2.0.0-beta.129",
-    "@tiptap/vue-2": "^2.0.0-beta.60",
+    "@tiptap/vue-2": "^2.0.0-beta.63",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
     "cookie-universal-nuxt": "^2.1.5",
