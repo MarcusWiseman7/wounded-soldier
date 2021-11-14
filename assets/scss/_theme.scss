@@ -43,6 +43,7 @@
     --color-bg-third: #514c4c;
 
     --color-border: #484c51;
+    --color-shadow: rgba(255, 255, 255, 0.2);
 }
 
 html {
@@ -53,20 +54,4 @@ html {
     @media (prefers-color-scheme: dark) {
         @include darkTheme;
     }
-
-    // &[data-theme='light'] {
-    //     @include lightTheme;
-
-    //     @media (prefers-color-scheme: dark) {
-    //         @include lightTheme;
-    //     }
-    // }
-
-    // &[data-theme='dark'] {
-    //     @include darkTheme;
-
-    //     @media (prefers-color-scheme: light) {
-    //         @include darkTheme;
-    //     }
-    // }
 }

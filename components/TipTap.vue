@@ -1,34 +1,35 @@
 <template>
     <div class="tiptap">
         <div class="menu" v-if="editor">
-            <button
-                v-for="(b, i) in menuButtons"
-                :key="i"
-                @click="editorMethods[b.id](b)"
-                :class="{
-                    'is-active': b.level
-                        ? editor.isActive('heading', { level: b.level })
-                        : b.align
-                        ? editor.isActive({ textAlign: b.align })
-                        : b.color
-                        ? false
-                        : editor.isActive(b.id),
-                    spacer: b.spacer,
-                }"
-            >
-                <component
-                    v-if="b.icon && b.id"
-                    :is="b.icon"
-                    :style="{
-                        fill:
-                            b.id === 'highlight' && editor.isActive('highlight')
-                                ? editor.getAttributes('highlight').color
-                                : b.id === 'textStyle' && editor.isActive('textStyle')
-                                ? editor.getAttributes('textStyle').color
-                                : '',
+            <div class="menu__button-group" v-for="(group, i) in menuGroups" :key="i">
+                <button
+                    v-for="(b, j) in group"
+                    :key="j"
+                    @click="editorMethods[b.id](b)"
+                    :class="{
+                        'is-active': b.level
+                            ? editor.isActive('heading', { level: b.level })
+                            : b.align
+                            ? editor.isActive({ textAlign: b.align })
+                            : b.color
+                            ? false
+                            : editor.isActive(b.id),
                     }"
-                ></component>
-            </button>
+                >
+                    <component
+                        v-if="b.icon && b.id"
+                        :is="b.icon"
+                        :style="{
+                            fill:
+                                b.id === 'highlight' && editor.isActive('highlight')
+                                    ? editor.getAttributes('highlight').color
+                                    : b.id === 'textStyle' && editor.isActive('textStyle')
+                                    ? editor.getAttributes('textStyle').color
+                                    : '',
+                        }"
+                    ></component>
+                </button>
+            </div>
         </div>
         <editor-content :editor="editor"></editor-content>
     </div>
@@ -105,26 +106,36 @@ export default {
         },
     },
     computed: {
-        menuButtons() {
+        menuGroups() {
             return [
-                { icon: 'H1', id: 'heading', level: 1 },
-                { icon: 'H2', id: 'heading', level: 2 },
-                { icon: 'H3', id: 'heading', level: 3 },
-                { icon: 'Paragraph', id: 'paragraph', spacer: true },
-                { icon: 'TextColor', id: 'textStyle', color: this.textColor },
-                { icon: 'Hlight', id: 'highlight', color: this.highlightColor, spacer: true },
-                { icon: 'Bold', id: 'bold' },
-                { icon: 'Italic', id: 'italic' },
-                { icon: 'Uline', id: 'underline' },
-                { icon: 'Strikethru', id: 'strike', spacer: true },
-                { icon: 'BulletList', id: 'bulletList' },
-                { icon: 'NumberList', id: 'orderedList' },
-                { icon: 'Quote', id: 'blockquote' },
-                { icon: 'Rule', id: 'seperator', spacer: true },
-                { icon: 'Left', id: 'align', align: 'left' },
-                { icon: 'Center', id: 'align', align: 'center' },
-                { icon: 'Justify', id: 'align', align: 'justify' },
-                { icon: 'Right', id: 'align', align: 'right' },
+                [
+                    { icon: 'H1', id: 'heading', level: 1 },
+                    { icon: 'H2', id: 'heading', level: 2 },
+                    { icon: 'H3', id: 'heading', level: 3 },
+                    { icon: 'Paragraph', id: 'paragraph' },
+                ],
+                [
+                    { icon: 'TextColor', id: 'textStyle', color: this.textColor },
+                    { icon: 'Hlight', id: 'highlight', color: this.highlightColor },
+                ],
+                [
+                    { icon: 'Bold', id: 'bold' },
+                    { icon: 'Italic', id: 'italic' },
+                    { icon: 'Uline', id: 'underline' },
+                    { icon: 'Strikethru', id: 'strike' },
+                ],
+                [
+                    { icon: 'BulletList', id: 'bulletList' },
+                    { icon: 'NumberList', id: 'orderedList' },
+                    { icon: 'Quote', id: 'blockquote' },
+                    { icon: 'Rule', id: 'seperator' },
+                ],
+                [
+                    { icon: 'Left', id: 'align', align: 'left' },
+                    { icon: 'Center', id: 'align', align: 'center' },
+                    { icon: 'Right', id: 'align', align: 'right' },
+                    { icon: 'Justify', id: 'align', align: 'justify' },
+                ],
             ];
         },
         editorMethods() {
@@ -242,7 +253,7 @@ export default {
 
 <style lang="scss" scoped>
 .tiptap {
-    padding: 40px;
+    // padding: 40px;
 }
 
 /deep/ .ProseMirror {
@@ -275,15 +286,18 @@ export default {
 
 .menu {
     background: var(--color-bg-second);
-    margin: 0 0 20px 0;
-    padding: 10px;
+    padding: 6px;
     display: flex;
-    gap: 6px;
-    width: fit-content;
-    border-radius: 4px;
+    flex-flow: wrap;
+    gap: 8px;
+
+    &__button-group {
+        display: flex;
+        gap: 4px;
+    }
 
     button {
-        padding: 4px 8px 2px;
+        padding: 2px 6px 0;
         border-radius: 4px;
         background: var(--color-bg-third);
     }
@@ -293,9 +307,5 @@ export default {
     svg {
         fill: var(--color-main);
     }
-}
-
-.spacer {
-    margin-right: 8px;
 }
 </style>
